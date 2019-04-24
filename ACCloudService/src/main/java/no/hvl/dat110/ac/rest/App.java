@@ -43,6 +43,12 @@ public class App {
 		 	return gson.toJson("IoT Access Control Device");
 		});
 		
+		post("/accessdevice/log/", (req, res) -> {
+			//FIXME req parameter skal endre value til noe
+		 	Gson gson = new Gson();
+		 	
+		 	return gson.toJson("IoT Access Control Device");
+		});
 		// TODO: implement the routes required for the access control service
 		
     }
