@@ -1,9 +1,9 @@
 package no.hvl.dat110.ac.rest;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import com.google.gson.Gson;
 
 /**
  * What is the goal this class has? The cloud-service should make it possible
@@ -44,10 +44,31 @@ public class AccessLog {
 		log.clear();
 	}
 
-	// TODO: JSON representation of the access log
+	/**
+	 * 	JSON representation of the access log
+	 * 
+	 * @return noe som dette:
+	 * [{"id":1,"message":"locked"},{"id":2,"message": "unlocked"}]
+	 */
 	public String toJson() {
 
 		String json = null;
+
+		if (!log.isEmpty()) {
+			json += "[";
+			
+			Iterator<Entry<Integer, AccessEntry>> it = log.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<Integer, AccessEntry> entry = it.next();
+				json += "{\"id\":" + entry.getKey() + ",\"message\":\"" + entry.getValue() + "\"}";
+				it.remove();
+				if (it.hasNext()) {
+					json += ",";
+				}
+			}
+			
+			json += "]";
+		}
 
 		return json;
 	}
