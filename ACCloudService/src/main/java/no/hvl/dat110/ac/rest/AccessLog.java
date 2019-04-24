@@ -5,41 +5,50 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.gson.Gson;
 
+/**
+ * What is the goal this class has? The cloud-service should make it possible
+ * for the access control device to register attempts to access the system in an
+ * access log
+ * 
+ * @author Jhoffis
+ *
+ */
 public class AccessLog {
-	
+
 	private AtomicInteger cid;
 	protected ConcurrentHashMap<Integer, AccessEntry> log;
-	
-	public AccessLog () {
-		this.log = new ConcurrentHashMap<Integer,AccessEntry>();
+
+	public AccessLog() {
+		this.log = new ConcurrentHashMap<Integer, AccessEntry>();
 		cid = new AtomicInteger(0);
 	}
 
-	// TODO: add an access entry for the message and return assigned id
+	// add an access entry for the message and return assigned id
 	public int add(String message) {
-		
-		int id = 0;
-		
+
+		int id = cid.getAndIncrement();
+		AccessEntry entry = new AccessEntry(id, message);
+		log.put(id, entry);
 		return id;
 	}
-		
-	// TODO: retrieve a specific access entry 
+
+	// retrieve a specific access entry
 	public AccessEntry get(int id) {
-		
-		return null;
-		
+
+		return log.get(id);
+
 	}
-	
-	// TODO: clear the access entry log
+
+	// clear the access entry log
 	public void clear() {
-		
+		log.clear();
 	}
-	
+
 	// TODO: JSON representation of the access log
-	public String toJson () {
-    	
+	public String toJson() {
+
 		String json = null;
-    	
-    	return json;
-    }
+
+		return json;
+	}
 }
