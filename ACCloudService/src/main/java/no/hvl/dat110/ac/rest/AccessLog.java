@@ -5,6 +5,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.gson.Gson;
+
 /**
  * What is the goal this class has? The cloud-service should make it possible
  * for the access control device to register attempts to access the system in an
@@ -51,24 +53,25 @@ public class AccessLog {
 	 * [{"id":1,"message":"locked"},{"id":2,"message": "unlocked"}]
 	 */
 	public String toJson() {
-
+		
+		Gson gson = new Gson();
 		String json = null;
 
+		json += "[";
 		if (!log.isEmpty()) {
-			json += "[";
 			
 			Iterator<Entry<Integer, AccessEntry>> it = log.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<Integer, AccessEntry> entry = it.next();
-				json += "{\"id\":" + entry.getKey() + ",\"message\":\"" + entry.getValue() + "\"}";
+				json += gson.toJson(entry.getValue());
 				it.remove();
 				if (it.hasNext()) {
 					json += ",";
 				}
 			}
 			
-			json += "]";
 		}
+		json += "]";
 
 		return json;
 	}

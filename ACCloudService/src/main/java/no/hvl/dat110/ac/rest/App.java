@@ -4,6 +4,9 @@ import static spark.Spark.after;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.put;
+
+import java.util.Set;
+
 import static spark.Spark.post;
 import static spark.Spark.delete;
 
@@ -44,11 +47,51 @@ public class App {
 		});
 		
 		post("/accessdevice/log/", (req, res) -> {
-			//FIXME req parameter skal endre value til noe
+
 		 	Gson gson = new Gson();
+		 	AccessMessage accessmsg = gson.fromJson(req.body(), AccessMessage.class);
+		 	String msg = accessmsg.getMessage();
+		 			
+		 	int id = accesslog.add(msg);
+		 	AccessEntry entry = accesslog.get(id);
 		 	
-		 	return gson.toJson("IoT Access Control Device");
+			return gson.toJson(entry);
 		});
+		
+		get("/accessdevice/log/", (req, res) -> {
+
+		 	return accesslog.toJson();
+		});
+		
+		get("/accessdevice/log/:id", (req, res) -> {
+			Gson gson = new Gson();
+			int id = Integer.parseInt(req.params("id"));
+			AccessEntry entry = accesslog.get(id);
+		
+		 	return gson.toJson(entry);
+		});
+		
+		put("/accessdevice/code", (req, res) -> {
+			Gson gson = new Gson();
+			AccessCode codes = gson.fromJson(req.body(), AccessCode.class);
+			codes.setAccesscode(codes.getAccesscode());
+		 	return gson.toJson(codes);
+		});
+		
+		get("/accessdevice/code", (req, res) -> {
+			Gson gson = new Gson();
+			AccessCode codes = gson.fromJson(req.body(), AccessCode.class);
+			return gson.toJson(codes);
+		});
+		
+		delete("/accessdevice/log/", (req, res) -> {
+
+			accesslog.clear();
+		 	
+			return accesslog.toJson();
+		});
+		
+		
 		// TODO: implement the routes required for the access control service
 		
     }
