@@ -92,8 +92,6 @@ public class App {
 		});
 		
 		
-		// TODO: implement the routes required for the access control service
-		
     }
     
 }
