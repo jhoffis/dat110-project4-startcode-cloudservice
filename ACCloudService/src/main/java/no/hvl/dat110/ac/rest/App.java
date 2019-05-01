@@ -80,7 +80,7 @@ public class App {
 		
 		get("/accessdevice/code", (req, res) -> {
 			Gson gson = new Gson();
-			AccessCode codes = gson.fromJson(req.body(), AccessCode.class);
+			AccessCode codes = gson.fromJson("{}", AccessCode.class);
 			return gson.toJson(codes);
 		});
 		
