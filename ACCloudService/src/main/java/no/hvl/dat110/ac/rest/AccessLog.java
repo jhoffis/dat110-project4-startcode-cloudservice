@@ -56,11 +56,12 @@ public class AccessLog {
 		
 		Gson gson = new Gson();
 		String json = null;
-
+		ConcurrentHashMap<Integer, AccessEntry> clone = new ConcurrentHashMap<Integer, AccessEntry>(log);
+		
 		json += "[";
 		if (!log.isEmpty()) {
 			
-			Iterator<Entry<Integer, AccessEntry>> it = log.entrySet().iterator();
+			Iterator<Entry<Integer, AccessEntry>> it = clone.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<Integer, AccessEntry> entry = it.next();
 				json += gson.toJson(entry.getValue());
